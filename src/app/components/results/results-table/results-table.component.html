@@ -1,0 +1,17 @@
+<table
+  class="table-fixed text-amber-50 border-spacing-2 border-amber-100 border">
+  <thead>
+    <th class="border border-amber-100 border-spacing-4 p-4">Pelaaja</th>
+    <th class="border border-amber-100 border-spacing-4 p-4">Pisteet</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players$ | async">
+      <td class="border border-amber-100 border-spacing-4 p-4">
+        {{ player.name }}
+      </td>
+      <td class="border border-amber-100 border-spacing-4 p-4">
+        {{ player.points }}
+      </td>
+    </tr>
+  </tbody>
+</table>

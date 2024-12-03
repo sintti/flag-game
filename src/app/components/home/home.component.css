@@ -1,0 +1,17 @@
+:host {
+  width: 50vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  /* Leveät näytöt */
+  @media (min-aspect-ratio: 1/1) {
+    width: 50%; /* Käytä 50 % leveyttä */
+    left: 25%; /* Keskitetään sivulle */
+  }
+}

@@ -1,0 +1,14 @@
+<div class="flex flex-col min-w-10">
+  <app-toggle
+    class="mb-5 w-5"
+    (change)="onToggleSinglePlayer()"
+    [isChecked]="settings?.singlePlayer">
+    Yksinpeli
+  </app-toggle>
+  <app-toggle
+    class="mb-5"
+    (change)="onToggleRounds()"
+    [isChecked]="settings?.rounds === 5 ? false : true">
+    {{ settings?.rounds }} kierrosta
+  </app-toggle>
+</div>

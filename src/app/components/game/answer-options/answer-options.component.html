@@ -1,0 +1,13 @@
+<div class="background flex items-center justify-center h-auto pb-16">
+  <div class="grid grid-rows-2 grid-cols-2 gap-x-10 gap-y-10">
+    @for (country of fourCountries(); track $index) {
+      <button
+        gameButton
+        class="w-full h-auto"
+        (click)="onSubmitAnswer($event)"
+        [attr.data-testid]="'answer-button-' + country.fin.toLocaleLowerCase()">
+        {{ country.fin }}
+      </button>
+    }
+  </div>
+</div>

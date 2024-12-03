@@ -1,0 +1,10 @@
+/node_modules
+/dist
+.gitignore
+.prettierrc*
+package.json
+package-lock.json
+tsconfig*
+/.vscode
+/.angular
+angular.json
