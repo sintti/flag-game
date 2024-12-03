@@ -1,5 +1,6 @@
 {
   "hosting": {
-    "public": "dist/flag-game/browser"
+    "public": "dist/flag-game",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   }
 }
