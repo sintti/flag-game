@@ -32,9 +32,10 @@ export class GameComponent implements OnInit, OnDestroy {
   turn: 'P1' | 'P2' | undefined;
   round = 0;
   modalVisible = false;
+  result = '';
   winner$: Player | undefined;
-  obsTimer: Observable<number> = timer(1, 1000);
-  currentTimer$: number | undefined;
+  obsTimer$: Observable<number> = timer(1, 1000);
+  currentTimer: number | undefined;
   obsTimerSubscription: Subscription | undefined;
   settingsSubscription: Subscription | undefined;
   playersSubscription: Subscription | undefined;
@@ -48,16 +49,12 @@ export class GameComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log('Initializing game component');
-
     this.fetchSettingsPlayersAndTurn();
 
     this.fetchCountries();
   }
 
   ngOnDestroy() {
-    console.log('Destroying game component: ', this.obsTimerSubscription);
-
     if (this.obsTimerSubscription) {
       this.obsTimerSubscription.unsubscribe();
     }
@@ -74,6 +71,17 @@ export class GameComponent implements OnInit, OnDestroy {
 
   get currentPlayer(): Player | undefined {
     return this.turn === 'P1' ? this.players?.[0] : this.players?.[1];
+  }
+
+  get correctCountry(): string {
+    if (this.settings?.showCorrectAnswer) {
+      return this.selectedCountry.fin;
+    }
+    return '';
+  }
+
+  closeModal() {
+    this.modalVisible = false;
   }
 
   fetchCountries() {
@@ -117,18 +125,16 @@ export class GameComponent implements OnInit, OnDestroy {
 
   handleTimerOnTurnChange(turn: 'P1' | 'P2') {
     if (this.settings?.timer) {
-      console.log('Handling timer on turn change');
-
       if (this.obsTimerSubscription) {
         this.obsTimerSubscription.unsubscribe();
       }
 
-      this.currentTimer$ = this.players?.find(
+      this.currentTimer = this.players?.find(
         (player) => player.id === turn
       )?.time;
 
-      this.obsTimerSubscription = this.obsTimer.subscribe((timer) => {
-        const timeToSave = this.currentTimer$! + timer;
+      this.obsTimerSubscription = this.obsTimer$.subscribe((timer) => {
+        const timeToSave = this.currentTimer! + timer;
         this.playersService.updatePlayerTime(turn, timeToSave);
       });
     }
@@ -153,32 +159,48 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.round === this.settings!.rounds * 2;
   }
 
-  checkAnswer(name: string) {
-    console.log('Checking answer');
+  showModal() {
+    this.modalVisible = true;
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        this.result = '';
+        this.closeModal();
+        resolve();
+      }, 2000);
+    });
+  }
 
+  setAnswerAndStopTimer(result: string) {
+    if (this.settings?.timer) {
+      this.obsTimerSubscription?.unsubscribe();
+    }
+    this.result = result;
+  }
+
+  checkAnswer = async (name: string) => {
     if (this.settings?.multiPlayer) {
       if (name === this.selectedCountry.fin) {
         this.playersService.addPlayerPoints(this.turn!);
-        alert('Oikea vastaus! Vastauksesi oli: ' + this.selectedCountry.fin);
+        this.setAnswerAndStopTimer('Oikein!');
+        await this.showModal(); // Oikea vastaus
         this.round++;
         if (this.gameEnd()) {
           this.playersService.getWinner().subscribe((winner) => {
             this.winner$ = winner;
           });
-          alert('Peli päättyi! Voittaja on: ' + this.winner$?.name);
           this.router.navigate(['/results']);
           return;
         }
         this.playersService.changeTurn();
         this.dealNewCountries();
       } else {
-        alert('Väärä vastaus! Oikea vastaus oli: ' + this.selectedCountry.fin);
+        this.setAnswerAndStopTimer('Väärin!');
+        await this.showModal(); // Väärä vastaus
         this.round++;
         if (this.gameEnd()) {
           this.playersService.getWinner().subscribe((winner) => {
             this.winner$ = winner;
           });
-          alert('Peli päättyi! Voittaja on: ' + this.winner$?.name);
           this.router.navigate(['/results']);
           return;
         }
@@ -189,24 +211,24 @@ export class GameComponent implements OnInit, OnDestroy {
     if (this.settings?.singlePlayer) {
       if (name === this.selectedCountry.fin) {
         this.playersService.addPlayerPoints('P1');
-        alert('Oikea vastaus! Vastauksesi oli: ' + this.selectedCountry.fin);
+        this.setAnswerAndStopTimer('Oikein!');
+        await this.showModal(); // Oikea vastaus
         this.round++;
         if (this.gameEnd()) {
-          alert('Sait yhteensä ' + this.players![0].points + ' pistettä!');
           this.router.navigate(['/results']);
           return;
         }
         this.dealNewCountries();
       } else {
-        alert('Väärä vastaus! Oikea vastaus oli: ' + this.selectedCountry.fin);
+        this.setAnswerAndStopTimer('Väärin!');
+        await this.showModal(); // Väärä vastaus
         this.round++;
         if (this.gameEnd()) {
-          alert('Sait yhteensä ' + this.players![0].points + ' pistettä!');
           this.router.navigate(['/results']);
           return;
         }
         this.dealNewCountries();
       }
     }
-  }
+  };
 }

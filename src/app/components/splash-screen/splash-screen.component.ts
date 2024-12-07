@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './splash-screen.component.css',
 })
 export class SplashScreenComponent implements OnInit {
-  isLoading = true;
+  isLoading = false;
 
   ngOnInit(): void {
     // Aseta viivästys, jonka jälkeen splash screen piilotetaan

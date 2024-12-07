@@ -1,5 +1,4 @@
-<div
-  class="flex flex-col mt-5 p-4 border bg-gray-800 border-amber-200 rounded shadow-lg min-w-[190px]">
+<div class="flex flex-col mt-5 p-4 bg-gray-700 rounded shadow-lg min-w-[190px]">
   <app-toggle
     class="mb-5 w-5"
     (change)="onToggleSinglePlayer()"
@@ -19,5 +18,11 @@
     (change)="onToggletimer()"
     [isChecked]="settings?.timer">
     <span class="min-w-[140px]">Aika</span>
+  </app-toggle>
+  <app-toggle
+    class="mb-5"
+    (change)="onToggleCorrectAnswer()"
+    [isChecked]="settings?.showCorrectAnswer">
+    <span class="min-w-[140px]">Näytä vastaukset</span>
   </app-toggle>
 </div>

@@ -1,6 +1,6 @@
-<app-answer-modal
-  [isVisible]="modalVisible"
-  [correctAnswer]="selectedCountry.fin" />
+@if (modalVisible) {
+  <app-answer-modal [result]="result" [correctAnswer]="correctCountry" />
+}
 <div class="background flex flex-col h-dvh">
   <app-flag [flag]="selectedCountry.flag" class="flex-grow max-h-[300px]" />
   <app-points

@@ -4,12 +4,13 @@ import { PlayersService } from '../../services/players.service';
 import { Router } from '@angular/router';
 import { AppSettings, SettingsService } from '../../services/settings.service';
 import { Player } from '../../models/player';
+import { ButtonComponent } from '../utility/button/button.component';
 
 @Component({
   selector: 'app-player-modal',
   standalone: true,
   templateUrl: './player-modal.component.html',
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonComponent],
   styleUrls: ['./player-modal.component.css'],
 })
 export class PlayerModalComponent implements OnInit {

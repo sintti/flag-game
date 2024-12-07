@@ -24,11 +24,14 @@ export class ResultsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.winner$ = this.players$.pipe(
-      map((players) =>
-        players.reduce((winner, player) =>
-          player.points > winner.points ? player : winner
-        )
-      )
+      map((players) => {
+        return players.sort((a, b) => {
+          if (b.points === a.points) {
+            return a.time - b.time; // Sort by time if points are the same
+          }
+          return b.points - a.points; // Sort by points in descending order
+        })[0]; // Return the player with the highest points and least time
+      })
     );
   }
 }

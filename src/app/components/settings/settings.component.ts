@@ -38,4 +38,10 @@ export class SettingsComponent implements OnInit {
       timer: !this.settings?.timer,
     });
   }
+
+  onToggleCorrectAnswer() {
+    this.settingsService.updateSettings({
+      showCorrectAnswer: !this.settings?.showCorrectAnswer,
+    });
+  }
 }

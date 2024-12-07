@@ -18,6 +18,7 @@ const mockSettings: AppSettings = {
   multiPlayer: true,
   rounds: 5,
   timer: false,
+  showCorrectAnswer: false,
 };
 
 const mockPlayers: Player[] = [

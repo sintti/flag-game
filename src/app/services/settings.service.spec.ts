@@ -22,6 +22,7 @@ describe('SettingsService', () => {
         multiPlayer: true,
         rounds: 5,
         timer: true,
+        showCorrectAnswer: false,
       });
     });
   });
@@ -32,6 +33,7 @@ describe('SettingsService', () => {
       multiPlayer: false,
       rounds: 10,
       timer: true,
+      showCorrectAnswer: false,
     };
 
     service = TestBed.inject(SettingsService);
@@ -57,6 +59,7 @@ describe('SettingsService', () => {
       multiPlayer: true,
       rounds: 10,
       timer: true,
+      showCorrectAnswer: false,
     });
     const updatedSettings: Partial<AppSettings> = {
       timer: false,
@@ -68,6 +71,7 @@ describe('SettingsService', () => {
       multiPlayer: true,
       rounds: 10,
       timer: false,
+      showCorrectAnswer: false,
     });
   });
 });

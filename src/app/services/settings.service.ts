@@ -6,6 +6,7 @@ export interface AppSettings {
   multiPlayer: boolean;
   rounds: 5 | 10;
   timer: boolean;
+  showCorrectAnswer: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +16,7 @@ export class SettingsService {
     multiPlayer: true,
     rounds: 5,
     timer: true,
+    showCorrectAnswer: false,
   };
 
   private settingsSubject: BehaviorSubject<AppSettings>;
