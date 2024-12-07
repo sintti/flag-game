@@ -1,11 +1,15 @@
-<div class="background flex flex-col items-center justify-center h-auto">
+<div
+  class="background flex flex-col justify-center items-center h-screen max-h-screen">
   @defer (on timer(2000ms)) {
-    <div class="flex flex-col justify-center items-center">
-      <img src="assets/cup.png" alt="Winner's price cup" />
-      <h1 class="text-amber-100 md:text-6xl md:mb-6 text-5xl mb-4">
+    <div class="flex flex-col justify-start items-center h-dvh">
+      <h1 class="text-amber-100 text-5xl">
         {{ (winner$ | async)?.name }}
       </h1>
-      <app-results-table />
+      <img
+        src="assets/cup.png"
+        class="h-80 sm:h-[500px]"
+        alt="Winner's price cup" />
+      <app-results-table class="" />
     </div>
   } @placeholder {
     <h1 class="text-amber-100 text-6xl">Voittaja on...</h1>

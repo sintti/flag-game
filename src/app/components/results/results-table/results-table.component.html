@@ -1,21 +1,18 @@
-<table
-  class="table-fixed text-amber-50 border-spacing-2 border-amber-100 border">
+<table class="table text-amber-50 border-spacing-2 border-amber-100 border">
   <thead>
-    <th class="border border-amber-100 border-spacing-4 p-4 text-lg">
-      Pelaaja
-    </th>
-    <th class="border border-amber-100 border-spacing-4 p-4">Pisteet</th>
-    <th class="border border-amber-100 border-spacing-4 p-4">Aika</th>
+    <th class="border border-amber-100 border-spacing-2 py-2 px-4">Pelaaja</th>
+    <th class="border border-amber-100 border-spacing-2 py-2 px-4">Pisteet</th>
+    <th class="border border-amber-100 border-spacing-2 py-2 px-4">Aika</th>
   </thead>
   <tbody>
     <tr *ngFor="let player of players$ | async">
-      <td class="border border-amber-100 border-spacing-4 p-4">
+      <td class="border border-amber-100 border-spacing-2 py-2 text-center">
         {{ player.name }}
       </td>
-      <td class="border border-amber-100 border-spacing-4 p-4">
+      <td class="border border-amber-100 border-spacing-2 py-2 text-center">
         {{ player.points }}
       </td>
-      <td class="border border-amber-100 border-spacing-4 p-4">
+      <td class="border border-amber-100 border-spacing-2 py-2 text-center">
         {{ player.time }}
       </td>
     </tr>
