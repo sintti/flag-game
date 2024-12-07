@@ -1,13 +1,11 @@
-<div class="grid grid-rows-3 grid-flow h-full">
-  <div class="row-span-2 flex flex-col justify-center items-center">
-    <img
-      class="h-1/2 sm:h-full"
-      src="assets/splash-screen_copy-removebg-preview.png"
-      alt="Lippukingi logo" />
-    <button gameButton data-testid="start-game-button" (click)="openModal()">
-      Aloita peli
-    </button>
-  </div>
+<div class="flex flex-col justify-center items-center h-full">
+  <img
+    class="h-[350px] sm:h-[500px]"
+    src="assets/splash-screen_copy-removebg-preview.png"
+    alt="Lippukingi logo" />
+  <button gameButton data-testid="start-game-button" (click)="openModal()">
+    Aloita peli
+  </button>
 </div>
 @if (showModal) {
   <app-player-modal
