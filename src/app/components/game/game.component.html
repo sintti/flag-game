@@ -1,15 +1,15 @@
 <app-answer-modal
   [isVisible]="modalVisible"
   [correctAnswer]="selectedCountry.fin" />
-<div class="background flex flex-col h-screen">
-  <app-flag [flag]="selectedCountry.flag" class="flex-grow overflow-auto" />
+<div class="background flex flex-col h-dvh">
+  <app-flag [flag]="selectedCountry.flag" class="flex-grow max-h-[300px]" />
   <app-points
     [playerName]="currentPlayer!.name"
     [playerPoints]="currentPlayer!.points"
     [playerTime]="currentPlayer!.time"
-    class="flex-grow overflow-auto" />
+    class="flex-grow max-h-[150px] mb-5" />
   <app-answer-options
     [fourCountries]="fourCountries"
     (answer)="checkAnswer($event)"
-    class="flex-grow overflow-auto" />
+    class="flex-grow min-h-[200px]" />
 </div>
