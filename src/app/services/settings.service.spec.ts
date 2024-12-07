@@ -21,6 +21,7 @@ describe('SettingsService', () => {
         singlePlayer: false,
         multiPlayer: true,
         rounds: 5,
+        timer: true,
       });
     });
   });
@@ -30,7 +31,7 @@ describe('SettingsService', () => {
       singlePlayer: true,
       multiPlayer: false,
       rounds: 10,
-      timeAttack: true,
+      timer: true,
     };
 
     service = TestBed.inject(SettingsService);
@@ -55,7 +56,18 @@ describe('SettingsService', () => {
       singlePlayer: false,
       multiPlayer: true,
       rounds: 10,
-      timeAttack: false,
+      timer: true,
+    });
+    const updatedSettings: Partial<AppSettings> = {
+      timer: false,
+    };
+    service.updateSettings(updatedSettings);
+    const newStoredSettings = JSON.parse(localStorage.getItem('appSettings')!);
+    expect(newStoredSettings).toEqual({
+      singlePlayer: false,
+      multiPlayer: true,
+      rounds: 10,
+      timer: false,
     });
   });
 });

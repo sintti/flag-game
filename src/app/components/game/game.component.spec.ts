@@ -17,7 +17,7 @@ const mockSettings: AppSettings = {
   singlePlayer: false,
   multiPlayer: true,
   rounds: 5,
-  timeAttack: false,
+  timer: false,
 };
 
 const mockPlayers: Player[] = [
@@ -74,7 +74,7 @@ describe('GameComponent', () => {
 
     it('should fetch turn on initialization', () => {
       expect(mockPlayersService.getTurn).toHaveBeenCalled();
-      expect(component.turn$).toBe('P1');
+      expect(component.turn).toBe('P1');
     });
 
     it('should fetch countries on initialization', () => {
@@ -121,7 +121,7 @@ describe('GameComponent', () => {
       // Asetetaan komponentin tilat
       component.fourCountries = mockCountryData;
       component.selectedCountry = mockCountryData[0];
-      component.players$ = mockPlayers;
+      component.players = mockPlayers;
 
       // Käynnistetään muutosten havaitseminen
       await renderResult.fixture.detectChanges();

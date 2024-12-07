@@ -6,6 +6,6 @@
     {{ playerPoints() }}
   </p>
   <p class="text-white text-4xl text-center">
-    {{ playerTime() }}
+    {{ playerTime() ? playerTime() : '' }}
   </p>
 </div>

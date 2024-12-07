@@ -4,22 +4,10 @@
 <div class="background flex flex-col h-screen">
   <app-flag [flag]="selectedCountry.flag" class="flex-grow overflow-auto" />
   <app-points
-    [playerName]="
-      this.turn$ === 'P1'
-        ? this.players$?.[0]?.name!
-        : this.players$?.[1]?.name!
-    "
-    [playerPoints]="
-      this.turn$ === 'P1'
-        ? this.players$?.[0]?.points!
-        : this.players$?.[1]?.points!
-    "
-    class="flex-grow overflow-auto"
-    [playerTime]="
-      this.turn$ === 'P1'
-        ? this.players$?.[0]?.time!
-        : this.players$?.[1]?.time!
-    " />
+    [playerName]="currentPlayer!.name"
+    [playerPoints]="currentPlayer!.points"
+    [playerTime]="currentPlayer!.time"
+    class="flex-grow overflow-auto" />
   <app-answer-options
     [fourCountries]="fourCountries"
     (answer)="checkAnswer($event)"

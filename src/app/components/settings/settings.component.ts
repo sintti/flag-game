@@ -33,9 +33,9 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  onToggleTimeAttack() {
+  onToggletimer() {
     this.settingsService.updateSettings({
-      timeAttack: !this.settings?.timeAttack,
+      timer: !this.settings?.timer,
     });
   }
 }

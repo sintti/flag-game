@@ -28,8 +28,8 @@ export class GameComponent implements OnInit, OnDestroy {
   fourCountries: Country[] = [];
   selectedCountry: Country = {} as Country;
   settings: AppSettings | undefined;
-  players$: Player[] | undefined;
-  turn$: 'P1' | 'P2' | undefined;
+  players: Player[] | undefined;
+  turn: 'P1' | 'P2' | undefined;
   round = 0;
   modalVisible = false;
   winner$: Player | undefined;
@@ -72,6 +72,10 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  get currentPlayer(): Player | undefined {
+    return this.turn === 'P1' ? this.players?.[0] : this.players?.[1];
+  }
+
   fetchCountries() {
     if (this.countries.length !== 0) {
       this.dealNewCountries();
@@ -102,30 +106,32 @@ export class GameComponent implements OnInit, OnDestroy {
     this.playersSubscription = this.playersService
       .getPlayers()
       .subscribe((players) => {
-        this.players$ = players;
+        this.players = players;
       });
 
     this.turnSubscription = this.playersService.getTurn().subscribe((turn) => {
-      this.turn$ = turn;
+      this.turn = turn;
       this.handleTimerOnTurnChange(turn);
     });
   }
 
   handleTimerOnTurnChange(turn: 'P1' | 'P2') {
-    console.log('Handling timer on turn change');
+    if (this.settings?.timer) {
+      console.log('Handling timer on turn change');
 
-    if (this.obsTimerSubscription) {
-      this.obsTimerSubscription.unsubscribe();
+      if (this.obsTimerSubscription) {
+        this.obsTimerSubscription.unsubscribe();
+      }
+
+      this.currentTimer$ = this.players?.find(
+        (player) => player.id === turn
+      )?.time;
+
+      this.obsTimerSubscription = this.obsTimer.subscribe((timer) => {
+        const timeToSave = this.currentTimer$! + timer;
+        this.playersService.updatePlayerTime(turn, timeToSave);
+      });
     }
-
-    this.currentTimer$ = this.players$?.find(
-      (player) => player.id === turn
-    )?.time;
-
-    this.obsTimerSubscription = this.obsTimer.subscribe((timer) => {
-      const timeToSave = this.currentTimer$! + timer;
-      this.playersService.updatePlayerTime(turn, timeToSave);
-    });
   }
 
   dealNewCountries() {
@@ -152,7 +158,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (this.settings?.multiPlayer) {
       if (name === this.selectedCountry.fin) {
-        this.playersService.addPlayerPoints(this.turn$!);
+        this.playersService.addPlayerPoints(this.turn!);
         alert('Oikea vastaus! Vastauksesi oli: ' + this.selectedCountry.fin);
         this.round++;
         if (this.gameEnd()) {
@@ -186,7 +192,7 @@ export class GameComponent implements OnInit, OnDestroy {
         alert('Oikea vastaus! Vastauksesi oli: ' + this.selectedCountry.fin);
         this.round++;
         if (this.gameEnd()) {
-          alert('Sait yhteensä ' + this.players$![0].points + ' pistettä!');
+          alert('Sait yhteensä ' + this.players![0].points + ' pistettä!');
           this.router.navigate(['/results']);
           return;
         }
@@ -195,7 +201,7 @@ export class GameComponent implements OnInit, OnDestroy {
         alert('Väärä vastaus! Oikea vastaus oli: ' + this.selectedCountry.fin);
         this.round++;
         if (this.gameEnd()) {
-          alert('Sait yhteensä ' + this.players$![0].points + ' pistettä!');
+          alert('Sait yhteensä ' + this.players![0].points + ' pistettä!');
           this.router.navigate(['/results']);
           return;
         }
