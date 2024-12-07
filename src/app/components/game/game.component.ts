@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FlagComponent } from './flag/flag.component';
 import { PointsComponent } from './points/points.component';
 import { AnswerOptionsComponent } from './answer-options/answer-options.component';
@@ -9,6 +9,7 @@ import { Country } from '../../models/country';
 import { Player } from '../../models/player';
 import { ModalComponent } from './answer-modal/answer-modal.component';
 import { Router } from '@angular/router';
+import { Observable, Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
   templateUrl: './game.component.html',
   styleUrl: './game.component.css',
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   countries: Country[] = [];
   fourCountries: Country[] = [];
   selectedCountry: Country = {} as Country;
@@ -32,6 +33,12 @@ export class GameComponent implements OnInit {
   round = 0;
   modalVisible = false;
   winner$: Player | undefined;
+  obsTimer: Observable<number> = timer(1, 1000);
+  currentTimer$: number | undefined;
+  obsTimerSubscription: Subscription | undefined;
+  settingsSubscription: Subscription | undefined;
+  playersSubscription: Subscription | undefined;
+  turnSubscription: Subscription | undefined;
 
   constructor(
     private playersService: PlayersService,
@@ -41,18 +48,31 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.settingsService.getSettings().subscribe((settings) => {
-      this.settings = settings;
-    });
+    console.log('Initializing game component');
 
-    this.playersService.getPlayers().subscribe((players) => {
-      this.players$ = players;
-    });
+    this.fetchSettingsPlayersAndTurn();
 
-    this.playersService.getTurn().subscribe((turn) => {
-      this.turn$ = turn;
-    });
+    this.fetchCountries();
+  }
 
+  ngOnDestroy() {
+    console.log('Destroying game component: ', this.obsTimerSubscription);
+
+    if (this.obsTimerSubscription) {
+      this.obsTimerSubscription.unsubscribe();
+    }
+    if (this.settingsSubscription) {
+      this.settingsSubscription.unsubscribe();
+    }
+    if (this.playersSubscription) {
+      this.playersSubscription.unsubscribe();
+    }
+    if (this.turnSubscription) {
+      this.turnSubscription.unsubscribe();
+    }
+  }
+
+  fetchCountries() {
     if (this.countries.length !== 0) {
       this.dealNewCountries();
       return;
@@ -69,6 +89,42 @@ export class GameComponent implements OnInit {
       complete: () => {
         console.log('Countries fetched');
       },
+    });
+  }
+
+  fetchSettingsPlayersAndTurn() {
+    this.settingsSubscription = this.settingsService
+      .getSettings()
+      .subscribe((settings) => {
+        this.settings = settings;
+      });
+
+    this.playersSubscription = this.playersService
+      .getPlayers()
+      .subscribe((players) => {
+        this.players$ = players;
+      });
+
+    this.turnSubscription = this.playersService.getTurn().subscribe((turn) => {
+      this.turn$ = turn;
+      this.handleTimerOnTurnChange(turn);
+    });
+  }
+
+  handleTimerOnTurnChange(turn: 'P1' | 'P2') {
+    console.log('Handling timer on turn change');
+
+    if (this.obsTimerSubscription) {
+      this.obsTimerSubscription.unsubscribe();
+    }
+
+    this.currentTimer$ = this.players$?.find(
+      (player) => player.id === turn
+    )?.time;
+
+    this.obsTimerSubscription = this.obsTimer.subscribe((timer) => {
+      const timeToSave = this.currentTimer$! + timer;
+      this.playersService.updatePlayerTime(turn, timeToSave);
     });
   }
 

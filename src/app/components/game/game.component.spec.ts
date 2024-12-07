@@ -17,11 +17,12 @@ const mockSettings: AppSettings = {
   singlePlayer: false,
   multiPlayer: true,
   rounds: 5,
+  timeAttack: false,
 };
 
 const mockPlayers: Player[] = [
-  { id: 'P1', name: 'Player 1', points: 45 },
-  { id: 'P2', name: 'Player 2', points: 0 },
+  { id: 'P1', name: 'Player 1', points: 45, time: 0 },
+  { id: 'P2', name: 'Player 2', points: 0, time: 0 },
 ];
 
 const mockCountryData: Country[] = [

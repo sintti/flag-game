@@ -30,6 +30,7 @@ describe('SettingsService', () => {
       singlePlayer: true,
       multiPlayer: false,
       rounds: 10,
+      timeAttack: true,
     };
 
     service = TestBed.inject(SettingsService);
@@ -54,6 +55,7 @@ describe('SettingsService', () => {
       singlePlayer: false,
       multiPlayer: true,
       rounds: 10,
+      timeAttack: false,
     });
   });
 });

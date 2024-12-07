@@ -5,6 +5,7 @@ export interface AppSettings {
   singlePlayer: boolean;
   multiPlayer: boolean;
   rounds: 5 | 10;
+  timeAttack: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +14,7 @@ export class SettingsService {
     singlePlayer: false,
     multiPlayer: true,
     rounds: 5,
+    timeAttack: false,
   };
 
   private settingsSubject: BehaviorSubject<AppSettings>;

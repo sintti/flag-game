@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ToggleComponent } from '../../../utility/toggle/toggle/toggle.component';
-import {
-  AppSettings,
-  SettingsService,
-} from '../../../../services/settings.service';
+import { ToggleComponent } from '../utility/toggle/toggle/toggle.component';
+import { AppSettings, SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -33,6 +30,12 @@ export class SettingsComponent implements OnInit {
   onToggleRounds() {
     this.settingsService.updateSettings({
       rounds: this.settings?.rounds === 5 ? 10 : 5,
+    });
+  }
+
+  onToggleTimeAttack() {
+    this.settingsService.updateSettings({
+      timeAttack: !this.settings?.timeAttack,
     });
   }
 }

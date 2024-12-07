@@ -11,4 +11,10 @@
     [isChecked]="settings?.rounds === 5 ? false : true">
     {{ settings?.rounds }} kierrosta
   </app-toggle>
+  <app-toggle
+    class="mb-5"
+    (change)="onToggleTimeAttack()"
+    [isChecked]="settings?.timeAttack">
+    Aika
+  </app-toggle>
 </div>

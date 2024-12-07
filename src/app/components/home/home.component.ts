@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PlayerModalComponent } from '../player-modal/player-modal.component';
 import { ButtonComponent } from '../utility/button/button.component';
-import { SettingsComponent } from './settings/settings/settings.component';
+import { SettingsComponent } from '../settings/settings.component';
 
 @Component({
   selector: 'app-home',

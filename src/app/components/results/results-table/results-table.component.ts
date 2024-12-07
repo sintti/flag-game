@@ -14,7 +14,7 @@ import { PlayersService } from '../../../services/players.service';
 export class ResultsTableComponent implements OnInit {
   players$!: Observable<Player[]>;
 
-  constructor(private playersService: PlayersService) {}
+  constructor(private readonly playersService: PlayersService) {}
 
   ngOnInit() {
     this.players$ = this.playersService.getPlayers();

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Player } from '../models/player';
 import { AppSettings, SettingsService } from './settings.service';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PlayersService {
   settings: AppSettings | undefined;
   private defaultPlayers: Player[] = [
-    { id: 'P1', name: 'Player 1', points: 0 },
-    { id: 'P2', name: 'Player 2', points: 0 },
+    { id: 'P1', name: 'Player 1', points: 0, time: 0 },
+    { id: 'P2', name: 'Player 2', points: 0, time: 0 },
   ];
   private defaultTurn: 'P1' | 'P2' = 'P1';
 
@@ -41,6 +41,14 @@ export class PlayersService {
     return this.playersSubject.asObservable();
   }
 
+  getTimer(id: 'P1' | 'P2'): Observable<number> {
+    return this.playersSubject
+      .asObservable()
+      .pipe(
+        map((players) => players.find((player) => player.id === id)?.time || 0)
+      );
+  }
+
   getPlayerById(id: string): Observable<Player | undefined> {
     return this.playersSubject
       .asObservable()
@@ -57,6 +65,18 @@ export class PlayersService {
           )
         )
       );
+  }
+
+  updatePlayerTime(id: string, time: number): void {
+    const players = this.playersSubject.value.map((player) => {
+      if (player.id === id) {
+        console.log('player time:', player.time);
+        return { ...player, time };
+      }
+      return player;
+    });
+    this.playersSubject.next(players);
+    this.savePlayers(players);
   }
 
   addPlayerPoints(id: string): void {
