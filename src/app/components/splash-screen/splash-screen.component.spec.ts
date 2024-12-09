@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SplashScreenComponent } from './splash-screen.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SplashScreenComponent', () => {
   let component: SplashScreenComponent;
@@ -9,6 +10,7 @@ describe('SplashScreenComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SplashScreenComponent],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SplashScreenComponent);

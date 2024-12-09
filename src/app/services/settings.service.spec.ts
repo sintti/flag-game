@@ -23,6 +23,13 @@ describe('SettingsService', () => {
         rounds: 5,
         timer: true,
         showCorrectAnswer: false,
+        region: {
+          africa: true,
+          americas: true,
+          asia: true,
+          europe: true,
+          oceania: true,
+        },
       });
     });
   });
@@ -34,6 +41,13 @@ describe('SettingsService', () => {
       rounds: 10,
       timer: true,
       showCorrectAnswer: false,
+      region: {
+        africa: true,
+        americas: true,
+        asia: true,
+        europe: true,
+        oceania: true,
+      },
     };
 
     service = TestBed.inject(SettingsService);
@@ -60,6 +74,13 @@ describe('SettingsService', () => {
       rounds: 10,
       timer: true,
       showCorrectAnswer: false,
+      region: {
+        africa: true,
+        americas: true,
+        asia: true,
+        europe: true,
+        oceania: true,
+      },
     });
     const updatedSettings: Partial<AppSettings> = {
       timer: false,
@@ -72,6 +93,13 @@ describe('SettingsService', () => {
       rounds: 10,
       timer: false,
       showCorrectAnswer: false,
+      region: {
+        africa: true,
+        americas: true,
+        asia: true,
+        europe: true,
+        oceania: true,
+      },
     });
   });
 });

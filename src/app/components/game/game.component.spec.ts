@@ -19,6 +19,13 @@ const mockSettings: AppSettings = {
   rounds: 5,
   timer: false,
   showCorrectAnswer: false,
+  region: {
+    africa: true,
+    americas: true,
+    asia: true,
+    europe: true,
+    oceania: true,
+  },
 };
 
 const mockPlayers: Player[] = [
@@ -27,10 +34,34 @@ const mockPlayers: Player[] = [
 ];
 
 const mockCountryData: Country[] = [
-  { id: '1', name: 'Finland', flag: 'assets/fi.svg', fin: 'Suomi' },
-  { id: '2', name: 'Sweden', flag: 'assets/se.svg', fin: 'Ruotsi' },
-  { id: '3', name: 'Norway', flag: 'assets/no.svg', fin: 'Norja' },
-  { id: '4', name: 'Denmark', flag: 'assets/dk.svg', fin: 'Tanska' },
+  {
+    id: '1',
+    name: 'Finland',
+    flag: 'assets/fi.svg',
+    fin: 'Suomi',
+    region: 'Europe',
+  },
+  {
+    id: '2',
+    name: 'Sweden',
+    flag: 'assets/se.svg',
+    fin: 'Ruotsi',
+    region: 'Europe',
+  },
+  {
+    id: '3',
+    name: 'Norway',
+    flag: 'assets/no.svg',
+    fin: 'Norja',
+    region: 'Europe',
+  },
+  {
+    id: '4',
+    name: 'Denmark',
+    flag: 'assets/dk.svg',
+    fin: 'Tanska',
+    region: 'Europe',
+  },
 ];
 
 // Mock services
