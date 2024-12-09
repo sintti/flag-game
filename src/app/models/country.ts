@@ -3,6 +3,7 @@ export interface Country {
   name: string;
   flag: string;
   fin: string;
+  region: string;
 }
 
 export interface CountryApiResponse {
@@ -22,4 +23,5 @@ export interface CountryApiResponse {
       official: string;
     };
   };
+  region: string;
 }

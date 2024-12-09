@@ -70,7 +70,6 @@ export class PlayersService {
   updatePlayerTime(id: string, time: number): void {
     const players = this.playersSubject.value.map((player) => {
       if (player.id === id) {
-        console.log('player time:', player.time);
         return { ...player, time };
       }
       return player;

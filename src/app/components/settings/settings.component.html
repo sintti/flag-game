@@ -25,4 +25,12 @@
     [isChecked]="settings?.showCorrectAnswer">
     <span class="min-w-[140px]">Näytä vastaukset</span>
   </app-toggle>
+  @for (region of regions; track $index) {
+    <app-checkbox
+      class="mb-5"
+      (checkedChange)="onToggleRegion(region, $event)"
+      [checked]="settings?.region?.[region] ?? false">
+      <span class="min-w-[140px]">{{ region }}</span>
+    </app-checkbox>
+  }
 </div>

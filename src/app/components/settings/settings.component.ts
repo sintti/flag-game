@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ToggleComponent } from '../utility/toggle/toggle/toggle.component';
+import { ToggleComponent } from '../utility/toggle/toggle.component';
 import { AppSettings, SettingsService } from '../../services/settings.service';
+import { CheckboxComponent } from '../utility/checkbox/checkbox.component';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [ToggleComponent],
+  imports: [ToggleComponent, CheckboxComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
 })
@@ -18,6 +19,12 @@ export class SettingsComponent implements OnInit {
     this.settingsService.getSettings().subscribe((settings) => {
       this.settings = settings;
     });
+  }
+
+  get regions(): (keyof AppSettings['region'])[] {
+    return Object.keys(
+      this.settings!.region
+    ) as (keyof AppSettings['region'])[];
   }
 
   onToggleSinglePlayer() {
@@ -42,6 +49,15 @@ export class SettingsComponent implements OnInit {
   onToggleCorrectAnswer() {
     this.settingsService.updateSettings({
       showCorrectAnswer: !this.settings?.showCorrectAnswer,
+    });
+  }
+
+  onToggleRegion(region: string, $event: boolean) {
+    this.settingsService.updateSettings({
+      region: {
+        ...this.settings!.region,
+        [region]: $event,
+      },
     });
   }
 }

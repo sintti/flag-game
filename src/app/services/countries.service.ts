@@ -12,34 +12,39 @@ export class CountriesService {
   constructor(private http: HttpClient) {}
 
   fetchCountries(): Observable<Country[]> {
-    if (this.countriesCache$) {
-      console.log('Returning cached data', this.countriesCache$);
-      // Jos data on jo haettu ja tallennettu, palauta cached data
-      return this.countriesCache$;
+    // Yritetään hakea data localStorage:sta
+    const cachedData = localStorage.getItem('countries');
+    if (cachedData) {
+      console.log('Returning cached data from localStorage');
+      return of(JSON.parse(cachedData)); // Palautetaan tallennettu data
     }
 
-    // Muuten tee HTTP-pyyntö ja tallenna tulos
+    // Jos dataa ei löydy localStorage:sta, tehdään HTTP-pyyntö
     console.log('Fetching new data');
-    this.countriesCache$ = this.http
-      .get<CountryApiResponse[]>('https://restcountries.com/v3.1/all')
+    return this.http
+      .get<
+        CountryApiResponse[]
+      >('https://restcountries.com/v3.1/independent?status=true')
       .pipe(
         map((res) => {
-          return res.map((country) => ({
+          const countries = res.map((country) => ({
             id: country.cca3,
             name: country.name.common,
             flag: country.flags.svg,
             fin: country.translations.fin.common,
+            region: country.region,
           }));
+          localStorage.setItem('countries', JSON.stringify(countries));
+
+          return countries;
         }),
         catchError((err) => {
           console.error(err.message);
-          // Virhetilanteessa voidaan palauttaa tyhjä taulukko
+          // Virhetilanteessa palautetaan tyhjä taulukko
           return of([]);
         }),
         shareReplay(1) // Säilytetään vain viimeisin haettu data
       );
-
-    return this.countriesCache$;
   }
 }
 

@@ -7,6 +7,13 @@ export interface AppSettings {
   rounds: 5 | 10;
   timer: boolean;
   showCorrectAnswer: boolean;
+  region: {
+    africa: boolean;
+    americas: boolean;
+    asia: boolean;
+    europe: boolean;
+    oceania: boolean;
+  };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +24,13 @@ export class SettingsService {
     rounds: 5,
     timer: true,
     showCorrectAnswer: false,
+    region: {
+      africa: true,
+      americas: true,
+      asia: true,
+      europe: true,
+      oceania: true,
+    },
   };
 
   private settingsSubject: BehaviorSubject<AppSettings>;
@@ -43,7 +57,6 @@ export class SettingsService {
   public updateSettings(newSettings: Partial<AppSettings>): void {
     const updatedSettings = { ...this.settingsSubject.value, ...newSettings };
     this.settingsSubject.next(updatedSettings);
-    // Tallennetaan asetukset localStorageen
     localStorage.setItem('appSettings', JSON.stringify(updatedSettings));
   }
 }

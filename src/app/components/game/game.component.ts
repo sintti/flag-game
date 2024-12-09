@@ -140,11 +140,31 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  get filteredCountries(): Country[] {
+    // Filter countries based on enabled regions
+    // First make a list of regions that are enabled
+    const listOfRegions = Object.keys(this.settings?.region || {}).filter(
+      (region) => this.settings?.region?.[region as keyof AppSettings['region']]
+    );
+
+    if (listOfRegions.length === 0) {
+      return this.countries;
+    } else {
+      return this.countries.filter((country) =>
+        listOfRegions.includes(country.region.toLowerCase())
+      );
+    }
+  }
+
   dealNewCountries() {
     const newCountries: Country[] = [];
+    const newFilteredCountries = this.filteredCountries;
+
     for (let i = 0; i < 4; i++) {
-      const randomIndex = Math.floor(Math.random() * this.countries.length);
-      newCountries.push(this.countries[randomIndex]);
+      const randomIndex = Math.floor(
+        Math.random() * newFilteredCountries.length
+      );
+      newCountries.push(newFilteredCountries[randomIndex]);
     }
     this.fourCountries = newCountries;
     this.selectedCountry = this.chooseRandomCountryFromFour(newCountries);
