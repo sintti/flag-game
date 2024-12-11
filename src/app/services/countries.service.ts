@@ -34,16 +34,17 @@ export class CountriesService {
             fin: country.translations.fin.common,
             region: country.region,
           }));
+          // Tallenna haettu data localStorageen
           localStorage.setItem('countries', JSON.stringify(countries));
 
           return countries;
         }),
         catchError((err) => {
           console.error(err.message);
-          // Virhetilanteessa palautetaan tyhjä taulukko
-          return of([]);
+
+          return of(err);
         }),
-        shareReplay(1) // Säilytetään vain viimeisin haettu data
+        shareReplay(1)
       );
   }
 }

@@ -7,6 +7,7 @@
       class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <button
         (click)="toggleMenu()"
+        data-testid="navbar-hamburger-menu"
         data-collapse-toggle="navbar-hamburger"
         type="button"
         class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-amber-100 rounded-lg hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -29,7 +30,7 @@
       </button>
       <div class="w-full" id="navbar-hamburger">
         @if (isMenuVisible) {
-          <app-settings />
+          <app-settings data-testid="settings-component" />
         }
       </div>
     </div>

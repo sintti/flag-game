@@ -1,10 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/angular';
+import { fireEvent, render, screen } from '@testing-library/angular';
 import { HeaderComponent } from './header.component';
 import { Location } from '@angular/common';
 import { provideRouter, Router } from '@angular/router';
 import { routes } from '../../app.routes';
 
-describe('Header', () => {
+describe('Header component', () => {
   it('should render header', async () => {
     await render(HeaderComponent, {});
 
@@ -43,5 +43,17 @@ describe('Header', () => {
     // Asset that we are back to / route
     expect(location.path()).toBe('/');
     expect(router.url).toBe('/');
+  });
+
+  it('should open menu on click', async () => {
+    const { fixture } = await render(HeaderComponent, {});
+
+    const menuButton = screen.getByTestId('navbar-hamburger-menu');
+    expect(fixture.componentInstance.isMenuVisible).toBe(false);
+    fireEvent.click(menuButton);
+
+    // expect toggleMenu() to be called
+    expect(fixture.componentInstance.isMenuVisible).toBe(true);
+    expect(screen.getByTestId('settings-component')).toBeVisible();
   });
 });

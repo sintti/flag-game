@@ -1,24 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SplashScreenComponent } from './splash-screen.component';
 import { provideHttpClient } from '@angular/common/http';
+import { SplashScreenComponent } from './splash-screen.component';
+import { render, screen } from '@testing-library/angular';
+import { of } from 'rxjs';
+import { CountriesService } from '../../services/countries.service';
+
+const mockCountriesService = {
+  fetchCountries: jest.fn(() => of([])), // Palauttaa tyhjän listan
+};
 
 describe('SplashScreenComponent', () => {
-  let component: SplashScreenComponent;
-  let fixture: ComponentFixture<SplashScreenComponent>;
+  it('should show for 3 seconds and then disappear', async () => {
+    const { fixture } = await render(SplashScreenComponent, {
+      providers: [
+        provideHttpClient(),
+        { provide: CountriesService, useValue: mockCountriesService },
+      ],
+    });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SplashScreenComponent],
-      providers: [provideHttpClient()],
-    }).compileComponents();
+    expect(screen.getByTestId('splash-screen')).toBeVisible();
+    expect(screen.getByTestId('splash-image')).toBeInTheDocument();
 
-    fixture = TestBed.createComponent(SplashScreenComponent);
-    component = fixture.componentInstance;
+    fixture.componentInstance.isLoading = false;
     fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(screen.queryByTestId('splash-screen')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('splash-image')).not.toBeInTheDocument();
   });
 });
